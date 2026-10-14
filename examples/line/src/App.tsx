@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useState, useRef, useLayoutEffect } from 'react'
+import type { EChartsType } from 'echarts'
 import { THEME_NAMES, tokens } from '@carbon/echarts-theme'
 import type { CarbonThemeName, ThemeKey } from '@carbon/echarts-theme'
-import { VARIANTS, DEFAULT_SLUG } from './variants'
+import { createChartToolbar } from '@carbon/echarts-toolbar/vanilla'
+import { VARIANTS, DEFAULT_SLUG, findVariant } from './variants'
 import { LineChart } from './LineChart'
 
 const THEME_OPTIONS = Object.entries(THEME_NAMES) as [ThemeKey, CarbonThemeName][]
@@ -20,8 +22,37 @@ export function App() {
   const [slug, setSlug] = useState<string>(readVariantParam)
   const { background, textPrimary, borderSubtle01 } = tokens[themeKey]
 
+  const chartWrapRef = useRef<HTMLDivElement>(null)
+  const toolbarRef = useRef<ReturnType<typeof createChartToolbar>>(null)
+  const pendingInstanceRef = useRef<EChartsType | null>(null)
+
+  const title = findVariant(slug).label
+
+  useLayoutEffect(() => {
+    const wrap = chartWrapRef.current
+    if (!wrap) return
+    toolbarRef.current = createChartToolbar(wrap, null, { title, fullscreenTarget: wrap })
+    if (pendingInstanceRef.current) {
+      toolbarRef.current.update(pendingInstanceRef.current)
+      pendingInstanceRef.current = null
+    }
+    return () => {
+      toolbarRef.current?.destroy()
+      toolbarRef.current = null
+    }
+  }, [title])
+
+  function handleChartReady(inst: EChartsType) {
+    if (toolbarRef.current) {
+      toolbarRef.current.update(inst)
+    } else {
+      pendingInstanceRef.current = inst
+    }
+  }
+
   return (
     <div
+      data-carbon-theme={themeKey}
       style={{
         minHeight: '100vh',
         padding: '1rem',
@@ -55,13 +86,15 @@ export function App() {
       </div>
 
       <div
+        ref={chartWrapRef}
         style={{
+          position: 'relative',
           border: `1px solid ${borderSubtle01}`,
           borderRadius: 4,
           padding: '0.5rem',
         }}
       >
-        <LineChart slug={slug} theme={THEME_NAMES[themeKey]} />
+        <LineChart slug={slug} theme={THEME_NAMES[themeKey]} onChartReady={handleChartReady} />
       </div>
     </div>
   )
