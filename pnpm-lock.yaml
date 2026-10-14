@@ -47,6 +47,43 @@ importers:
         specifier: ^5.8.3
         version: 5.9.3
 
+  examples/line:
+    dependencies:
+      '@carbon/colors':
+        specifier: ^11.30.0
+        version: 11.54.0
+      '@carbon/echarts-theme':
+        specifier: ^0.7.0
+        version: 0.7.0(echarts@6.1.0)
+      echarts:
+        specifier: ^6.1.0
+        version: 6.1.0
+      echarts-for-react:
+        specifier: ^3.0.2
+        version: 3.0.6(echarts@6.1.0)(react@19.2.8)
+      react:
+        specifier: ^19.1.0
+        version: 19.2.8
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.1.5
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: ^19.1.5
+        version: 19.2.3(@types/react@19.2.17)
+      '@vitejs/plugin-react':
+        specifier: ^4.4.1
+        version: 4.7.0(vite@6.4.3(@types/node@26.1.2)(jiti@2.6.1)(sass@1.102.0)(yaml@2.9.0))
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+      vite:
+        specifier: ^6.3.5
+        version: 6.4.3(@types/node@26.1.2)(jiti@2.6.1)(sass@1.102.0)(yaml@2.9.0)
+
   packages/site:
     dependencies:
       '@carbon-labs/react-theme-settings':
@@ -433,6 +470,14 @@ packages:
       {
         integrity: sha512-r5hwvrs9cTa/FZ2ToVlyT1Owo5FwzxYn2uACvSmgmAj0t3D44h49JMpS63A1Qmy+/TO3MIzHQVBhZE7Vptcumg==,
       }
+
+  '@carbon/echarts-theme@0.7.0':
+    resolution:
+      {
+        integrity: sha512-7vb6UFG24991jtUEPak4SoeRlEyiI5z8wNMt9eECL8qO11YXxMy5lqw2IexaqU51qUFOv/jhCtkMj3io49j00g==,
+      }
+    peerDependencies:
+      echarts: '>=5.0.0'
 
   '@carbon/feature-flags@0.22.0':
     resolution:
@@ -6936,6 +6981,11 @@ snapshots:
   '@carbon/colors@11.54.0':
     dependencies:
       '@ibm/telemetry-js': 1.11.0
+
+  '@carbon/echarts-theme@0.7.0(echarts@6.1.0)':
+    dependencies:
+      '@ibm/telemetry-js': 1.11.0
+      echarts: 6.1.0
 
   '@carbon/feature-flags@0.22.0':
     dependencies:
